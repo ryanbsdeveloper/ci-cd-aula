@@ -1,0 +1,14 @@
+{
+  "name": "ci-cd-aula",
+  "version": "1.0.0",
+  "description": "CI/CD",
+  "main": "app.js",
+  "license": "ISC",
+  "scripts": {
+    "start": "node app.js",
+    "deploy": "echo \"Deploy simulado com sucesso!\""
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
