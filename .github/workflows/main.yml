@@ -1,12 +1,17 @@
 name: workflow-ci-cd
+
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
-     - 'main'
+      - main
 
 jobs:
   tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -17,24 +22,29 @@ jobs:
           node-version: '24'
           cache: yarn
 
+      - name: Node version
+        run: node -v
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Run tests
-        run: |
-          yarn test
+        run: yarn test
 
   deploy:
     needs: tests
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+
     steps:
       - name: Restart application
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{secrets.PRIVATE_SSH_KEY}}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
           script: |
             cd ci-cd-aula
-            git pull
-            pm2 restart ci-cd-aula
+            git fetch origin
+            git reset --hard origin/main
+            pm2 reload ci-cd-aula
