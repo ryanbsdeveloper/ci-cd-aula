@@ -12,3 +12,7 @@ beforeAll(() => {
 test('title exists', () => {
   expect(document.title).toBe('CI/CD Pipeline Demo');
 });
+
+test('error testing', () => {
+  expect(document.title).toBe('ERROR');
+});
