@@ -16,7 +16,7 @@ jobs:
           yarn install
 
       - name: Swap directories
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
