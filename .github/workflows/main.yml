@@ -15,14 +15,17 @@ jobs:
         run: |
           yarn install
 
-      - name: Swap directories
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restart application
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{secrets.PRIVATE_SSH_KEY}}
           script: |
-            pm2 restart 'CI_CD'
+            pm2 restart ci-cd-aula
 
   
   
