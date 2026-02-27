@@ -5,19 +5,27 @@ on:
      - 'main'
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install package.json
+      - name: Validate code
+        run: |
+          yarn test
+
+  deploy:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
         run: |
           yarn install
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
       - name: Restart application
         uses: appleboy/ssh-action@v1.1.0
         with:
@@ -25,6 +33,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{secrets.PRIVATE_SSH_KEY}}
           script: |
-            cd ci-cd-aula
-            git pull
             pm2 restart ci-cd-aula
