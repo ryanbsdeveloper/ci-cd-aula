@@ -20,6 +20,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
+          key: ${{secrets.PRIVATE_SSH_KEY}}
           script: |
             pm2 restart 'CI_CD'
 
