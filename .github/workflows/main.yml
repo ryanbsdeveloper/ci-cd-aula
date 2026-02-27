@@ -1,0 +1,28 @@
+name: workflow-ci-cd
+on:
+  push:
+    branches:
+     - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install package.json
+        run: |
+          yarn install
+
+      - name: Swap directories
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          script: |
+            pm2 restart 'CI_CD'
+
+  
+  
+  
