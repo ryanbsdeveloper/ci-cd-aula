@@ -1,0 +1,27 @@
+name: CD - Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-tests:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: call-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restart application
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          script: |
+            cd ci-cd-aula
+            git fetch origin
+            git reset --hard origin/main
+            yarn install --frozen-lockfile
+            pm2 reload ci-cd-aula
