@@ -12,8 +12,3 @@ beforeAll(() => {
 test('title exists', () => {
   expect(document.title).toBe('CI/CD Pipeline Demo');
 });
-
-
-test('?exists?', () => {
-  expect(document.title).toBe('?exists?');
-});
